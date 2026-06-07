@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mohamed Sowkath Sameem J | Fresher Data Analyst Portfolio</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: default;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0c15;
+            color: #f0f3fa;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Canvas 3D background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Content layer */
+        .content {
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(10, 12, 21, 0.65);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(72, 187, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-weight: 600;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 8%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero {
+            min-height: 90vh;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #c084fc, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 1.5rem 0 2rem;
+            color: #cbd5e6;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(105deg, #3b82f6, #8b5cf6);
+            border: none;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(59,130,246,0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: #60a5fa;
+        }
+
+        /* Section titles */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            border-radius: 4px;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .skill-card {
+            background: rgba(20, 24, 36, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .skill-card i {
+            margin-right: 8px;
+            color: #60a5fa;
+        }
+        .skill-card:hover {
+            transform: translateY(-4px);
+            border-color: #60a5fa;
+            background: rgba(59,130,246,0.15);
+        }
+
+        /* Projects Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .project-card {
+            background: rgba(15, 18, 28, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 1.8rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: #8b5cf6;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
+        }
+        .project-icon {
+            font-size: 2.5rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.7rem;
+        }
+        .project-card p {
+            color: #b9c3db;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tech {
+            background: #1e293b;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Contact & Social */
+        .contact-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .contact-card {
+            background: rgba(20, 24, 36, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(96,165,250,0.2);
+            transition: 0.2s;
+        }
+        .contact-card i {
+            font-size: 1.8rem;
+            color: #60a5fa;
+        }
+        .contact-card a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contact-card:hover {
+            background: rgba(59,130,246,0.2);
+            border-color: #60a5fa;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.4);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            section {
+                padding: 3rem 5%;
+            }
+            .btn-group {
+                flex-wrap: wrap;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="content">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-chart-line"></i> Sameem<span style="color:#60a5fa">Analytics</span></div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Turning Data into<br><span class="gradient-text">Actionable Insights</span></h1>
+        <p>Hi, I'm <strong>Mohamed Sowkath Sameem J</strong> — aspiring Data Analyst with a passion for uncovering patterns, building dashboards, and driving data-informed decisions. Eager to apply analytical skills in real-world scenarios.</p>
+        <div class="btn-group">
+            <a href="#projects" class="btn btn-primary"><i class="fas fa-chart-simple"></i> Explore My Work</a>
+            <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Get In Touch</a>
+        </div>
+    </section>
+
+    <!-- About Section (Fresher version) -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div style="max-width: 800px;">
+            <p style="font-size: 1.15rem; margin-bottom: 1.5rem;">I'm a detail-oriented <strong class="gradient-text">entry-level Data Analyst</strong> with a strong foundation in statistics, data visualization, and storytelling. Recently completed advanced certifications in Python, SQL, and Power BI, and I'm ready to help organizations make smarter, data-driven decisions.</p>
+            <p style="color: #cbd5e6;">Through academic projects, personal challenges, and Kaggle competitions, I've developed a keen eye for cleaning messy data, performing EDA, and creating insightful dashboards. I'm constantly learning new tools and techniques — currently diving into predictive modeling and big data frameworks.</p>
+        </div>
+        <div style="margin-top: 2.5rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+            <div><i class="fas fa-code-branch" style="color:#60a5fa; font-size: 2rem;"></i><br><strong>5+</strong><br>Analytics Projects</div>
+            <div><i class="fas fa-certificate" style="color:#c084fc; font-size: 2rem;"></i><br><strong>2</strong><br>Certifications</div>
+        </div>
+    </section>
+
+    <!-- Skills Section (Fresher toolkit) -->
+    <section id="skills">
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="skills-grid">
+            <div class="skill-card"><i class="fab fa-python"></i> Python (Pandas, NumPy, Matplotlib)</div>
+            <div class="skill-card"><i class="fas fa-database"></i> SQL (MySQL, PostgreSQL)</div>
+            <div class="skill-card"><i class="fas fa-chart-pie"></i> Power BI / Tableau</div>
+            <div class="skill-card"><i class="fas fa-chart-simple"></i> Excel (Pivot, Power Query)</div>
+             <div class="skill-card"><i class="fas fa-robot"></i> Scikit-learn (Basics)</div>
+            <div class="skill-card"><i class="fas fa-cloud"></i> Git / GitHub</div>
+        </div>
+    </section>
+
+    <!-- Projects Section (Fresher relevant projects) -->
+    <section id="projects">
+        <h2 class="section-title">Highlighted Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Sales Performance Dashboard</h3>
+                <p>Built an interactive Power BI dashboard for a retail dataset (10K+ rows) revealing top products, regional sales trends, and seasonal patterns. Designed actionable KPIs for business strategy.</p>
+                <div class="tech-stack"><span class="tech">Power BI</span><span class="tech">DAX</span><span class="tech">SQL</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
+                <h3>COVID-19 Exploratory Analysis</h3>
+                <p>Performed global EDA using Python (Pandas, Plotly) on Johns Hopkins dataset. Visualized infection rates, recovery trends, and vaccination progress with interactive maps.</p>
+                <div class="tech-stack"><span class="tech">Python</span><span class="tech">Plotly</span><span class="tech">Jupyter</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon"><i class="fas fa-users"></i></div>
+                <h3>Customer Churn Prediction (Beginner ML)</h3>
+                <p>Developed a logistic regression model to predict telecom customer churn with 82% accuracy. Created a Streamlit web app for live predictions and feature importance insights.</p>
+                <div class="tech-stack"><span class="tech">Scikit-learn</span><span class="tech">Streamlit</span><span class="tech">Pandas</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (Fresher contact info placeholder but functional) -->
+    <section id="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-info">
+            <div class="contact-card"><i class="fas fa-envelope"></i><a href="mailto:mohamedsameem2904@gmail.com">mohamedsameem2904@gmail.com</a></div>
+            <div class="contact-card"><i class="fab fa-github"></i><a href="https://github.com/mohamedsameem2904-stack">github.com/mohamedsameem2904-stack</a></div>
+            <div class="contact-card"><i class="fab fa-linkedin"></i><a href="https://linkedin.com/in/mohamed-sowkath-sameem">linkedin.com/in/mohamed-sowkath-sameem</a></div>
+        </div>
+        <p style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.7;"><i class="fas fa-chart-simple"></i> Open to full-time & internship opportunities — let's turn data into value together.</p>
+    </section>
+
+    <footer>
+        <p>© 2026 Mohamed Sowkath Sameem J — Data Analyst Portfolio | 3D Immersive Experience</p>
+    </footer>
+</div>
+
+<!-- Three.js library -->
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // --- Setup scene, camera, renderer ---
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050a14);
+    scene.fog = new THREE.FogExp2(0x050a14, 0.008);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(4, 3, 12);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    // --- Lighting system ---
+    const ambientLight = new THREE.AmbientLight(0x22223b);
+    scene.add(ambientLight);
+    
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(3, 8, 2);
+    dirLight.castShadow = true;
+    dirLight.receiveShadow = true;
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.height = 1024;
+    scene.add(dirLight);
+    
+    const fillLight = new THREE.PointLight(0x4f6f8f, 0.5);
+    fillLight.position.set(0, -2, 0);
+    scene.add(fillLight);
+    
+    const rimLight = new THREE.PointLight(0x8b5cf6, 0.6);
+    rimLight.position.set(-2, 2, -4);
+    scene.add(rimLight);
+    
+    const colorLight = new THREE.PointLight(0x3b82f6, 0.5);
+    colorLight.position.set(2, 1, 3);
+    scene.add(colorLight);
+    
+    // --- Grid floor ---
+    const gridHelper = new THREE.GridHelper(20, 20, 0x60a5fa, 0x2d3a5e);
+    gridHelper.position.y = -1.8;
+    gridHelper.material.transparent = true;
+    gridHelper.material.opacity = 0.2;
+    scene.add(gridHelper);
+    
+    // --- Data Bar Ring (representing KPIs) ---
+    const barGroup = new THREE.Group();
+    const barCount = 18;
+    const radius = 3.2;
+    const barWidth = 0.32;
+    const barDepth = 0.32;
+    
+    const kpiHeights = [2.1, 1.4, 2.5, 1.9, 2.3, 1.2, 2.8, 2.0, 1.6, 2.4, 1.8, 2.2, 2.7, 1.5, 2.0, 1.9, 2.3, 1.7];
+    const colors = [0x3b82f6, 0x60a5fa, 0x8b5cf6, 0xc084fc, 0x34d399, 0x2dd4bf];
+    
+    for (let i = 0; i < barCount; i++) {
+        const height = kpiHeights[i];
+        const geometry = new THREE.BoxGeometry(barWidth, height, barDepth);
+        const colorVal = colors[i % colors.length];
+        const material = new THREE.MeshStandardMaterial({ color: colorVal, emissive: 0x1e1a3a, emissiveIntensity: 0.25, roughness: 0.3, metalness: 0.7 });
+        const bar = new THREE.Mesh(geometry, material);
+        const angle = (i / barCount) * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        bar.position.set(x, height / 2, z);
+        bar.castShadow = true;
+        barGroup.add(bar);
+        
+        const topSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(0.08, 6, 6),
+            new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0x442200, emissiveIntensity: 0.5 })
+        );
+        topSphere.position.set(x, height + 0.08, z);
+        barGroup.add(topSphere);
+    }
+    scene.add(barGroup);
+    
+    // --- Floating Particles System ---
+    const particleCount = 1800;
+    const particlesGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const particleColors = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+        const radiusVar = 4.5 + Math.random() * 3;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const x = Math.sin(phi) * Math.cos(theta) * radiusVar;
+        const z = Math.sin(phi) * Math.sin(theta) * radiusVar;
+        const y = Math.sin(phi * 2) * 1.5 + (Math.random() - 0.5) * 2.5;
+        positions[i*3] = x;
+        positions[i*3+1] = y;
+        positions[i*3+2] = z;
+        
+        const colorChoice = Math.random() > 0.6 ? 0x60a5fa : 0x8b5cf6;
+        const r = ((colorChoice >> 16) & 255)/255;
+        const g = ((colorChoice >> 8) & 255)/255;
+        const b = (colorChoice & 255)/255;
+        particleColors[i*3] = r + (Math.random() - 0.5)*0.3;
+        particleColors[i*3+1] = g + (Math.random() - 0.5)*0.3;
+        particleColors[i*3+2] = b + (Math.random() - 0.5)*0.2;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+    const particleMaterial = new THREE.PointsMaterial({ size: 0.08, vertexColors: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+    const particleSystem = new THREE.Points(particlesGeometry, particleMaterial);
+    scene.add(particleSystem);
+    
+    // --- Central Data Core ---
+    const knotGeo = new THREE.TorusKnotGeometry(0.85, 0.18, 180, 24, 3, 4);
+    const knotMat = new THREE.MeshStandardMaterial({ color: 0x3b82f6, emissive: 0x1e3a8a, emissiveIntensity: 0.8, metalness: 0.9, roughness: 0.2 });
+    const knot = new THREE.Mesh(knotGeo, knotMat);
+    knot.castShadow = true;
+    scene.add(knot);
+    
+    const coreSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.55, 32, 32),
+        new THREE.MeshStandardMaterial({ color: 0x2dd4bf, emissive: 0x115e59, emissiveIntensity: 0.4, wireframe: false, transparent: true, opacity: 0.25 })
+    );
+    scene.add(coreSphere);
+    
+    const ringGeo = new THREE.TorusGeometry(0.95, 0.035, 64, 200);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x6b21a8 });
+    const ring1 = new THREE.Mesh(ringGeo, ringMat);
+    ring1.rotation.x = Math.PI / 2;
+    scene.add(ring1);
+    const ring2 = new THREE.Mesh(ringGeo, ringMat);
+    ring2.rotation.z = Math.PI / 3;
+    ring2.rotation.x = Math.PI / 3;
+    scene.add(ring2);
+    
+    const dataCubes = [];
+    for (let i = 0; i < 45; i++) {
+        const sz = 0.08 + Math.random() * 0.07;
+        const cubeGeo = new THREE.BoxGeometry(sz, sz, sz);
+        const cubeMat = new THREE.MeshStandardMaterial({ color: 0x60a5fa, emissive: 0x1e3a8a, emissiveIntensity: 0.3 });
+        const cube = new THREE.Mesh(cubeGeo, cubeMat);
+        const rad = 2.2 + Math.random() * 1.2;
+        const ang1 = Math.random() * Math.PI * 2;
+        const ang2 = Math.random() * Math.PI * 2;
+        cube.position.x = Math.sin(ang1) * Math.cos(ang2) * rad;
+        cube.position.z = Math.cos(ang1) * Math.sin(ang2) * rad;
+        cube.position.y = Math.sin(ang2) * rad * 0.8;
+        cube.castShadow = true;
+        scene.add(cube);
+        dataCubes.push(cube);
+    }
+    
+    // --- animation loop ---
+    let time = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.012;
+        
+        barGroup.rotation.y += 0.003;
+        barGroup.rotation.x = Math.sin(time * 0.2) * 0.05;
+        barGroup.rotation.z = Math.cos(time * 0.23) * 0.03;
+        
+        knot.rotation.x += 0.008;
+        knot.rotation.y += 0.012;
+        knot.rotation.z += 0.007;
+        coreSphere.rotation.x = time * 0.2;
+        coreSphere.rotation.y = time * 0.3;
+        
+        ring1.rotation.z += 0.01;
+        ring1.rotation.y += 0.005;
+        ring2.rotation.x += 0.008;
+        ring2.rotation.z += 0.007;
+        
+        particleSystem.rotation.y += 0.0008;
+        particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
+        
+        dataCubes.forEach((cube, idx) => {
+            cube.position.y += Math.sin(time * 1.5 + idx) * 0.002;
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.02;
+        });
+        
+        colorLight.position.x = 2.5 + Math.sin(time) * 1.2;
+        colorLight.intensity = 0.55 + Math.sin(time * 1.7) * 0.2;
+        
+        camera.position.x += (0 - camera.position.x) * 0.02;
+        camera.position.y += (3 + Math.sin(time * 0.2) * 0.08 - camera.position.y) * 0.02;
+        camera.lookAt(0, 0.5, 0);
+        
+        renderer.render(scene, camera);
+    }
+    
+    animate();
+    
+    window.addEventListener('resize', onWindowResize, false);
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    
+    console.log("3D Fresher Data Analyst Portfolio — Ready, responsive, and glitch-free");
+</script>
+</body>
+</html>
